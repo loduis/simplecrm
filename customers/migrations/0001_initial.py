@@ -22,7 +22,7 @@ class Migration(SchemaMigration):
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('first_name', self.gf('django.db.models.fields.CharField')(max_length=255)),
             ('last_name', self.gf('django.db.models.fields.CharField')(max_length=255, blank=True)),
-            ('company', self.gf('django.db.models.fields.related.ForeignKey')(related_name='employees', to=orm['customers.Company'])),
+            ('company', self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='people', null=True, to=orm['customers.Company'])),
             ('email', self.gf('django.db.models.fields.EmailField')(max_length=200)),
             ('phone', self.gf('django.db.models.fields.CharField')(max_length=20, blank=True)),
         ))
@@ -68,7 +68,7 @@ class Migration(SchemaMigration):
         },
         'customers.person': {
             'Meta': {'object_name': 'Person'},
-            'company': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'employees'", 'to': "orm['customers.Company']"}),
+            'company': ('django.db.models.fields.related.ForeignKey', [], {'blank': 'True', 'related_name': "'people'", 'null': 'True', 'to': "orm['customers.Company']"}),
             'email': ('django.db.models.fields.EmailField', [], {'max_length': '200'}),
             'first_name': ('django.db.models.fields.CharField', [], {'max_length': '255'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),

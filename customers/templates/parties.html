@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block title %} Simple CRM{% endblock %}
+{% block content %}
+<div class="well">
+  <div class="span12">All companies</div>
+</div>
+<ul>
+  {% for party in parties %}
+    <li><a href="{{ party.get_absolute_url }}">{{ party }}</a></li>
+  {% endfor %}
+</ul>
+{% endblock %}
