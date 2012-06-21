@@ -10,7 +10,7 @@ class PersonAdmin(admin.ModelAdmin):
   search_fields = ['first_name','last_name','company__name']
 
 class CompanyAdmin(admin.ModelAdmin):
-  list_display = ['name', 'website', 'app_id']
+  list_display = ['name', 'website']
 
 admin.site.register(Company, CompanyAdmin)
 admin.site.register(Person, PersonAdmin)

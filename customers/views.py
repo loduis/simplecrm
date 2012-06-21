@@ -2,45 +2,66 @@
 
 from django.template.context import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
+from django.http import HttpResponse
 
 
 from customers.models import Company, Person
+from  customers.forms import CompanyForm, PersonForm
 
+
+def render(template, request, data = {}):
+  context = RequestContext(request)
+  return render_to_response(template, data, context_instance = context)
 
 def index(request):
-  data = {}
-  context = RequestContext(request)
-  return render_to_response('companies/index.html', data, context_instance = context)
+  return render('companies/index.html', request)
 
 def companies(request):
+  if request.method == 'POST':
+    import json
+    form = CompanyForm(request.POST or None)
+    data = {}
+    data['status'] = 'error'
+    if form.is_valid():
+      company = form.save();
+      data['status'] = 'done';
+      data['id'] = company.id
+    else:
+      data['form'] = form.errors;
+
+    return HttpResponse(json.dumps(data), mimetype="application/json");
+  else:
+    data = {}
+    data['active'] = 'companies';
+    data['parties'] = Company.objects.all();
+    return render('companies/index.html', request, data)
+
+def company_view(request, company_id):
   data = {}
-  data['active'] = 'companies';
-  data['parties'] = Company.objects.all();
+  company = get_object_or_404(Company, id = company_id);
+  data['company'] = company;
+  data['people'] = company.people.all();
   
-  context = RequestContext(request)  
+  return render('companies/view.html', request, data)  
+
+def company_new(request):
+  data = {}
+  data['form'] = CompanyForm()
+  return render('companies/form.html', request, data)  
   
-  return render_to_response('parties.html', data, context_instance = context)
 
 def people(request):
   data = {}
   data['active'] = 'people';
   data['parties'] = Person.objects.all();
   
-  context = RequestContext(request)  
+  return render('parties.html', request, data)  
   
-  return render_to_response('parties.html', data, context_instance = context)
-
-
-def company(request, company_id):
+def new_people(request):
   data = {}
-  company = get_object_or_404(Company, id = company_id);
+  data['form'] = PersonForm()
+  return render('people/form.html', request, data)  
   
-  data['company'] = company;
-  data['people'] = company.people.all();
-  
-  context = RequestContext(request)
-
-  return render_to_response('company.html', data, context_instance = context)
 
 def person(request, person_id):
 
@@ -50,8 +71,4 @@ def person(request, person_id):
   data['person'] = person;
   data['company'] = person.company;
     
-  context = RequestContext(request)
-
-  return render_to_response('person.html', data, context_instance = context)
-
-  
+  return render('person.html', request, data)

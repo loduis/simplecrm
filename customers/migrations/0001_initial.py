@@ -13,7 +13,8 @@ class Migration(SchemaMigration):
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=300)),
             ('website', self.gf('django.db.models.fields.URLField')(max_length=200, blank=True)),
-            ('app_id', self.gf('django.db.models.fields.IntegerField')(null=True, blank=True)),
+            ('customer_id', self.gf('django.db.models.fields.IntegerField')(null=True, blank=True)),
+            ('referred_by', self.gf('django.db.models.fields.CharField')(max_length=200, blank=True)),
         ))
         db.send_create_signal('customers', ['Company'])
 
@@ -53,9 +54,10 @@ class Migration(SchemaMigration):
     models = {
         'customers.company': {
             'Meta': {'object_name': 'Company'},
-            'app_id': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
+            'customer_id': ('django.db.models.fields.IntegerField', [], {'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '300'}),
+            'referred_by': ('django.db.models.fields.CharField', [], {'max_length': '200', 'blank': 'True'}),
             'website': ('django.db.models.fields.URLField', [], {'max_length': '200', 'blank': 'True'})
         },
         'customers.note': {

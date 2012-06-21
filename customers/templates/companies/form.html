@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1>Add a new company</h1>
+<hr>
+<form id="company_form" action="{% url companies %}" method="post" autocomplete="off">
+  {% csrf_token %}
+  {{ form }}
+  <hr>
+  <input type="submit" class="btn btn-primary" value="Save">
+</form>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+var onSubmit = function (event) {
+  // es la url a donde se envian los datos
+  var url = this.action;  
+  
+  $.post(url, $(this).serialize(), function (data) {
+    if (data.status == 'done') {
+      location.href = url + '/' + data.id;
+    } else if (data.form) {
+      var errors = data.form, alertId, focus = false;
+      for (var id in errors) {
+        alertId = 'alert_error_' + id;
+        if ($('#' + alertId).length === 0) {
+          $('#id_' + id).after('<div id="'+ alertId + 
+              '" class="alert alert-error"><button type="button" class="close" data-dismiss="alert">×</button><strong>' + 
+              errors[id] + '</strong></div>');
+        }
+        if (!focus) {
+          $('#id_' + id).focus();
+          focus = true;
+        }
+      }
+    }
+  }, 'json');
+  //evita que se envien los datos del formulario como se hace normalmente
+  event.preventDefault();
+};
+
+
+$('#company_form').submit(onSubmit)
+</script>
+{% endblock %}

@@ -44,9 +44,9 @@
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
-              <li><a href="#">Company</a></li>
+              <li><a href="{% url company_new %}">Company</a></li>
               <li class="divider"></li>
-              <li><a href="#">Person</a></li>
+              <li><a href="{% url new_people %}">Person</a></li>
             </ul>
           </div>
           <form id="form-search" class="navbar-search pull-left" action="">
@@ -104,6 +104,7 @@
     </div>
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.js"></script>
   <script type="text/javascript" src="/static/bootstrap/js/bootstrap.js"></script>
-  
+  {%block script %}
+  {% endblock %}
 </body>
 </html>
